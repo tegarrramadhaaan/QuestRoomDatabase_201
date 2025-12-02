@@ -30,3 +30,5 @@ class HomeViewModel(private val repositoriSiswa: RepositoriSiswa): ViewModel() {
         val listSiswa: List<Siswa> = listOf()
     )
 }
+
+annotation class HomeViewModel

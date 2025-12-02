@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.myroomsatu"
-    compileSdk = 34 // gunakan 34 (stabil). compileSdk 36 belum final/dirilis
+    compileSdk = 36 // Diperbarui untuk memenuhi persyaratan dependensi
 
     defaultConfig {
         applicationId = "com.example.myroomsatu"
         minSdk = 24
-        targetSdk = 34 // samakan dengan compileSdk stabil
+        targetSdk = 36 // Diperbarui agar konsisten dengan compileSdk
         versionCode = 1
         versionName = "1.0"
 
