@@ -30,5 +30,3 @@ object PenyediaViewModel {
  * Fungsi ekstensi untuk mendapatkan instance AplikasiSiswa dari CreationExtras.
  * Ini adalah cara standar untuk mengakses Application context dalam ViewModel factory.
  */
-fun CreationExtras.aplikasiSiswa(): AplikasiSiswa = 
-    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as AplikasiSiswa)
