@@ -156,12 +156,3 @@ fun DataSiswa(
                 Text(
                     text = siswa.telpon,
                     style = MaterialTheme.typography.titleMedium
-                )
-            }
-            Text(
-                text = siswa.alamat,
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
-    }
-}
