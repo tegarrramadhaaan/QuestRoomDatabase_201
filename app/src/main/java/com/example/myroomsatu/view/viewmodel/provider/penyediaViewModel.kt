@@ -7,7 +7,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.myroomsatu.AplikasiSiswa
 import com.example.myroomsatu.view.viewmodel.EntryViewModel
 import com.example.myroomsatu.view.viewmodel.HomeViewModel
-import com.example.myroomsatu.viewmodel.HomeViewModel
 
 /**
  * Pabrik untuk menyediakan instance ViewModel dengan dependensi yang dibutuhkan.

@@ -43,6 +43,7 @@ import com.example.myroomsatu.view.viewmodel.provider.PenyediaViewModel
 @Composable
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
+    onItemClick: (Int) -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
@@ -73,7 +74,7 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             listSiswa = uiStateSiswa.listSiswa,
-            onSiswaClick = {},
+            onSiswaClick = onItemClick,
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()

@@ -6,10 +6,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.material3.ExperimentalMaterial3Api // This import seems unused in the code shown
+import com.example.myroomsatu.view.DetailSiswaScreen
+import com.example.myroomsatu.view.EntrySiswaScreen
+import com.example.myroomsatu.view.HomeScreen
+import com.example.myroomsatu.view.route.DestinasiDetailSiswa
 import com.example.myroomsatu.view.route.DestinasiEntry
 import com.example.myroomsatu.view.route.DestinasiHome
 
+@Composable
 fun SiswaApp(navController: NavHostController = rememberNavController(), modifier: Modifier = Modifier) {
     HostNavigasi(navController = navController, modifier = modifier)
 }
@@ -27,10 +31,22 @@ fun HostNavigasi(
         composable(route = DestinasiHome.route) {
             HomeScreen(
                 navigateToItemEntry = { navController.navigate(route = DestinasiEntry.route) },
+                onItemClick = { itemId ->
+                    navController.navigate("${DestinasiDetailSiswa.route}/$itemId")
+                }
             )
         }
         composable(route = DestinasiEntry.route) {
             EntrySiswaScreen(navigateBack = { navController.popBackStack() })
+        }
+        composable(
+            route = DestinasiDetailSiswa.routeWithArgs,
+            arguments = DestinasiDetailSiswa.arguments
+        ) {
+            DetailSiswaScreen(
+                navigateBack = { navController.popBackStack() },
+                navigateToEditItem = {}
+            )
         }
     }
 }

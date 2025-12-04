@@ -1,39 +1,41 @@
 package com.example.myroomsatu.view.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.myroomsatu.repositori.RepositoriSiswa
 import com.example.myroomsatu.room.Siswa
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
-class EntryViewModel(private val repositoriSiswa: RepositoriSiswa) : ViewModel(){
+class EntryViewModel(private val repositoriSiswa: RepositoriSiswa) : ViewModel() {
 
-    /**
-     * Berisi status siswa saat ini
-     */
-    var uiStateSiswa by mutableStateOf(UIStateSiswa())
-        private set
+    // StateFlow privat yang bisa diubah
+    private val _uiStateSiswa = MutableStateFlow(UIStateSiswa())
+    // StateFlow publik yang hanya bisa dibaca oleh UI
+    val uiStateSiswa: StateFlow<UIStateSiswa> = _uiStateSiswa.asStateFlow()
 
-    /**
-     * Fungsi untuk memvalidasi input
-     */
-    private fun validasiInput(detailSiswa: DetailSiswa = uiStateSiswa.detailSiswa): Boolean{
-        return with(detailSiswa){
-            nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
+    // Fungsi untuk memperbarui UI state berdasarkan input pengguna
+    fun updateUiState(detailSiswa: DetailSiswa) {
+        _uiStateSiswa.update {
+            it.copy(
+                detailSiswa = detailSiswa,
+                isEntryValid = validasiInput(detailSiswa)
+            )
         }
     }
 
-    fun updateUiState(detailSiswa: DetailSiswa){
-        uiStateSiswa = UIStateSiswa(detailSiswa = detailSiswa, isEntryValid = validasiInput(detailSiswa))
+    // Fungsi untuk menyimpan siswa baru ke repositori
+    suspend fun saveSiswa() {
+        if (validasiInput()) {
+            repositoriSiswa.insertSiswa(_uiStateSiswa.value.detailSiswa.toSiswa())
+        }
     }
 
-    /**
-     * Fungsi untuk menyimpan data yang dientry
-     */
-    suspend fun saveSiswa(){
-        if (validasiInput()){
-            repositoriSiswa.insertSiswa(uiStateSiswa.detailSiswa.toSiswa())
+    // Fungsi privat untuk memvalidasi input
+    private fun validasiInput(detailSiswa: DetailSiswa = _uiStateSiswa.value.detailSiswa): Boolean {
+        return with(detailSiswa) {
+            nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
         }
     }
 }
@@ -64,10 +66,11 @@ fun DetailSiswa.toSiswa(): Siswa = Siswa(
     telpon = telpon
 )
 
-fun Siswa.toUiStateSiswa(isEntryValid: Boolean = false):UIStateSiswa = UIStateSiswa(
+fun Siswa.toUiStateSiswa(isEntryValid: Boolean = false): UIStateSiswa = UIStateSiswa(
     detailSiswa = this.toDetailSiswa(),
     isEntryValid = isEntryValid
 )
+
 /**
  * Fungsi ekstensi untuk mengubah data kelas [Siswa] menjadi data kelas [UIStateSiswa]
  */
